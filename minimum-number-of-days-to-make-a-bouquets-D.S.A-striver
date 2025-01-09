@@ -1,0 +1,67 @@
+class Solution {
+public:
+    // Helper function to check if it's possible to make the required number of bouquets
+    // on or before the given day (`mid`).
+    int fu(int mid, vector<int>& bloomDay, int buque, int flrequired) {
+        int i = 0;        // Index to iterate through the bloomDay array
+        int flowers = 0;  // Count of consecutive flowers that have bloomed
+        int count = 0;    // Count of bouquets formed
+
+        // Iterate through the bloomDay array
+        while (i < bloomDay.size()) {
+            // If the current flower blooms on or before `mid`, increase the flower count
+            if (mid >= bloomDay[i])
+                flowers += 1;
+            else
+                flowers = 0; // Reset flower count if the flower hasn't bloomed yet
+
+            // If the required number of flowers are gathered for one bouquet
+            if (flowers == flrequired) {
+                count++;   // Increment the bouquet count
+                flowers = 0; // Reset the flower count for the next bouquet
+            }
+
+            // If we already have enough bouquets, return 1 (possible)
+            if (count >= buque)
+                return 1;
+
+            i++; // Move to the next flower
+        }
+
+        // If unable to form the required number of bouquets, return 0 (not possible)
+        return 0;
+    }
+
+    // Main function to find the minimum number of days required to form `m` bouquets
+    // with `o` flowers in each bouquet.
+    int minDays(vector<int>& bloomDay, int m, int o) {
+        // If the total number of flowers is less than required, return -1 immediately
+        if (m * o > bloomDay.size())
+            return -1;
+
+        // Define the search space for binary search
+        int s = *min_element(bloomDay.begin(), bloomDay.end()); // Minimum bloom day
+        int e = *max_element(bloomDay.begin(), bloomDay.end()); // Maximum bloom day
+        int p = e; // Store the maximum day for a final check
+
+        // Perform binary search to find the minimum number of days
+        while (s <= e) {
+            int mid = (s + e) / 2; // Calculate the mid-point of the current range
+
+            // Check if it's possible to make the required bouquets on day `mid`
+            int sqr = fu(mid, bloomDay, m, o);
+
+            if (sqr == 0) // If not possible, move to the right half
+                s = mid + 1;
+            else          // If possible, move to the left half
+                e = mid - 1;
+        }
+
+        // If the result is out of range, return -1
+        if (s > p)
+            return -1;
+
+        // Return the minimum number of days required
+        return s;
+    }
+};
