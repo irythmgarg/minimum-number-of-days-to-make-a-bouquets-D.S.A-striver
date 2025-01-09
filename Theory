@@ -1,0 +1,54 @@
+Problem Context
+The function minDays is solving a problem related to flower arrangements, where:
+
+We are given an array bloomDay representing the day each flower will bloom.
+We need to make m bouquets, and each bouquet must contain exactly o consecutive flowers.
+The goal is to find the minimum number of days required to create m bouquets, or return -1 if it is not possible.
+Code Explanation
+Class and Function Definitions
+Class Declaration:
+
+The code is encapsulated in a class named Solution, which adheres to standard coding practices in competitive programming for solving problems.
+Helper Function fu:
+
+Purpose: Checks if it is possible to make buque (number of bouquets) using flowers that bloom within mid days.
+Parameters:
+mid: The current day being evaluated.
+piles: The bloomDay array.
+buque: Number of bouquets required (m).
+flrequired: Flowers required in each bouquet (o).
+Logic:
+Iterate through the bloomDay array.
+Count consecutive flowers that can bloom on or before mid days.
+If the count of consecutive flowers reaches flrequired, one bouquet is formed, and flowers counter resets to 0.
+Stop once the required number of bouquets is formed, and return 1 (possible). If the loop completes without forming buque bouquets, return 0 (not possible).
+Main Function minDays:
+
+Purpose: Determines the minimum days needed to form m bouquets with o flowers each, using binary search.
+Parameters:
+bloomDay: Array of days when flowers bloom.
+m: Number of bouquets required.
+o: Number of flowers required in each bouquet.
+Logic:
+Use binary search to minimize the number of days required.
+Initialize s (start) to the minimum bloom day and e (end) to the maximum bloom day in the array.
+For each mid (midpoint of the current range):
+Call the helper function fu to check if m bouquets can be formed in mid days.
+If fu returns 1, adjust the search range to the left (e = mid - 1) to explore smaller days.
+Otherwise, adjust the search range to the right (s = mid + 1) to explore larger days.
+Return the value of s if it's within bounds; otherwise, return -1 if not possible.
+
+
+Binary Search:
+
+Used to efficiently find the minimum number of days.
+Time complexity: 
+O(N⋅log(D)), where 
+N is the size of the bloomDay array, and 
+D is the range of bloom days.
+Greedy Check:
+
+The helper function fu greedily checks if m bouquets can be formed within mid days.
+Edge Case:
+
+If the total number of required flowers (m * o) exceeds the total number of flowers in bloomDay, it is impossible to form the bouquets. This case can be pre-checked:
